@@ -1,21 +1,46 @@
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
 // Authorable "Exclusive Offers for You" bento gallery.
-// Content comes from the block table (Universal Editor authorable):
-//   row 1: section title
-//   row 2: link (anchor) | link text
-//   rows 3+: one offer each — image | alt | text | link | classes (size,
-//            text-position, color, font as space-separated CSS classes)
+// Content comes from the block table. The container model is (title, link,
+// linkText), so the first rows carry those fields; the remaining rows are the
+// offer items (image, imageAlt, text, link):
+//   row 1: title
+//   row 2: link (the "Explore all offers" anchor; its text is the link label)
+//   rows 3+: one offer each — image | text | link
+// Per-tile bento size/position/color/font come from the "classes" model field
+// in Universal Editor; in static content they default by tile position.
+
+const DEFAULT_STYLES = [
+  ['offers-size-feature', 'offers-pos-bottom-left'],
+  ['offers-size-tall', 'offers-pos-bottom-left'],
+  ['offers-size-small', 'offers-pos-top-left'],
+  ['offers-size-small', 'offers-pos-bottom-left'],
+];
 
 /** Read a cell's trimmed text. */
 function cellText(cell) {
   return cell ? cell.textContent.trim() : '';
 }
 
+/** Extract any offers-* style classes present in the row (UE `classes` field). */
+function styleClassesFor(row, index) {
+  const authored = [...row.querySelectorAll('*')]
+    .flatMap((el) => [...el.classList])
+    .filter((c) => c.startsWith('offers-'));
+  const fromText = cellText(row).split(/[\s,]+/).filter((c) => c.startsWith('offers-'));
+  const classes = [...new Set([...authored, ...fromText])];
+  const fallback = DEFAULT_STYLES[index] || DEFAULT_STYLES[DEFAULT_STYLES.length - 1];
+  if (!classes.some((c) => c.startsWith('offers-size-'))) classes.push(fallback[0]);
+  if (!classes.some((c) => c.startsWith('offers-pos-'))) classes.push(fallback[1]);
+  if (!classes.some((c) => c.startsWith('offers-color-'))) classes.push('offers-color-white');
+  if (!classes.some((c) => c.startsWith('offers-font-'))) classes.push('offers-font-default');
+  return classes;
+}
+
 export default function decorate(block) {
   const rows = [...block.children];
 
-  // Row 1 = section title; row 2 = cta link + cta text. Both optional.
+  // Row 1 = section title; row 2 = cta link. Both optional.
   const titleRow = rows[0];
   const ctaRow = rows[1];
   const offerRows = rows.slice(2);
@@ -32,12 +57,11 @@ export default function decorate(block) {
   header.append(heading);
 
   if (ctaRow) {
-    const cells = [...ctaRow.children];
     const linkEl = ctaRow.querySelector('a');
-    const label = cellText(cells[1]) || (linkEl && linkEl.textContent.trim()) || 'Explore all offers';
+    const label = (linkEl && linkEl.textContent.trim()) || cellText(ctaRow) || 'Explore all offers';
     const cta = document.createElement('a');
     cta.className = 'exclusive-offers-explore';
-    cta.href = linkEl ? linkEl.getAttribute('href') : (cellText(cells[0]) || '#');
+    cta.href = linkEl ? linkEl.getAttribute('href') : '#';
     cta.textContent = label;
     header.append(cta);
   }
@@ -47,21 +71,14 @@ export default function decorate(block) {
   const gallery = document.createElement('div');
   gallery.className = 'exclusive-offers-gallery';
 
-  offerRows.forEach((row) => {
+  offerRows.forEach((row, index) => {
     const cells = [...row.children];
     const picture = row.querySelector('picture');
-    const linkEl = cells[3] ? cells[3].querySelector('a') : null;
-
-    // Style classes authored in the last cell (space/comma separated). Provide
-    // sensible defaults when none are chosen.
-    const styleClasses = cellText(cells[4]).split(/[\s,]+/).filter(Boolean);
-    if (!styleClasses.some((c) => c.startsWith('offers-size-'))) styleClasses.push('offers-size-small');
-    if (!styleClasses.some((c) => c.startsWith('offers-pos-'))) styleClasses.push('offers-pos-bottom-left');
-    if (!styleClasses.some((c) => c.startsWith('offers-color-'))) styleClasses.push('offers-color-white');
-    if (!styleClasses.some((c) => c.startsWith('offers-font-'))) styleClasses.push('offers-font-default');
+    // Offer item cells: image | text | link.
+    const linkEl = cells[2] ? cells[2].querySelector('a') : row.querySelector('a');
 
     const card = document.createElement('a');
-    card.className = ['exclusive-offers-card', ...styleClasses].join(' ');
+    card.className = ['exclusive-offers-card', ...styleClassesFor(row, index)].join(' ');
     card.href = linkEl ? linkEl.getAttribute('href') : '#';
     moveInstrumentation(row, card);
 
@@ -72,11 +89,13 @@ export default function decorate(block) {
 
     const body = document.createElement('div');
     body.className = 'exclusive-offers-card-body';
-    // cells[2] holds the richtext (title + optional description).
-    const textCell = cells[2];
+    // cells[1] holds the richtext (title + optional description).
+    const textCell = cells[1];
     if (textCell) {
-      [...textCell.children].forEach((el) => body.append(el.cloneNode(true)));
-      if (!textCell.children.length && cellText(textCell)) {
+      [...textCell.children].forEach((el) => {
+        if (!el.querySelector || !el.querySelector('img')) body.append(el.cloneNode(true));
+      });
+      if (!body.children.length && cellText(textCell)) {
         const h = document.createElement('h3');
         h.textContent = cellText(textCell);
         body.append(h);
