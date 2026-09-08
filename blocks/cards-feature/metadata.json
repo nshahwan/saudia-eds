@@ -1,0 +1,39 @@
+{
+  "variantName": "cards-feature",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-09-07T11:00:39.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.saudia.com/",
+    "originPage": "Saudia Airlines homepage",
+    "blockPosition": "middle (multiple sections)"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "feature",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "grid of items, each image + title + text + link",
+    "buttonCount": 0,
+    "imageCount": 4
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "destination / fare grids",
+      "promotional tile grids",
+      "article / experience lists with thumbnails",
+      "feature grids with image + title + description"
+    ],
+    "notSuitableFor": [
+      "single full-width promotional banners",
+      "text-only content"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-09-07T11:00:39.000Z"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "variantName": "hero-promo",
+  "baseBlock": "hero",
+  "version": "1.0.0",
+  "created": "2026-09-07T11:00:39.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.saudia.com/",
+    "originPage": "Saudia Airlines homepage",
+    "blockPosition": "top and repeated throughout"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "spacious",
+    "purpose": "promo-hero",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "heading + text + CTA over full-bleed background image",
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "full-width promotional banners",
+      "campaign / sale banners with a background image",
+      "co-branded hero banners with heading and CTA"
+    ],
+    "notSuitableFor": [
+      "text-only page intros with no background image",
+      "grids of repeating items"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-09-07T11:00:39.000Z"
+  }
+}

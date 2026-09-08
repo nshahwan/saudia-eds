@@ -1,0 +1,146 @@
+{
+  "definitions": [
+    {
+      "title": "Offers Gallery",
+      "id": "offers-gallery",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Offers Gallery",
+              "model": "offers-gallery",
+              "filter": "offers-gallery"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Offer",
+      "id": "offer",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Offer",
+              "model": "offer"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "offers-gallery",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "title",
+          "label": "Section title",
+          "value": "Exclusive Offers for You"
+        },
+        {
+          "component": "aem-content",
+          "valueType": "string",
+          "name": "link",
+          "label": "Link"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "linkText",
+          "label": "Link text",
+          "value": "Explore all offers"
+        }
+      ]
+    },
+    {
+      "id": "offer",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "label": "Alt",
+          "value": ""
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "text",
+          "label": "Text",
+          "value": ""
+        },
+        {
+          "component": "aem-content",
+          "valueType": "string",
+          "name": "link",
+          "label": "Link"
+        },
+        {
+          "component": "multiselect",
+          "valueType": "string",
+          "name": "classes",
+          "label": "Style (size, text position, color, font)",
+          "value": "",
+          "options": [
+            {
+              "name": "Size",
+              "children": [
+                { "name": "Feature (large)", "value": "offers-size-feature" },
+                { "name": "Tall", "value": "offers-size-tall" },
+                { "name": "Small", "value": "offers-size-small" }
+              ]
+            },
+            {
+              "name": "Text position",
+              "children": [
+                { "name": "Bottom left", "value": "offers-pos-bottom-left" },
+                { "name": "Bottom center", "value": "offers-pos-bottom-center" },
+                { "name": "Bottom right", "value": "offers-pos-bottom-right" },
+                { "name": "Top left", "value": "offers-pos-top-left" },
+                { "name": "Center", "value": "offers-pos-center" }
+              ]
+            },
+            {
+              "name": "Text color",
+              "children": [
+                { "name": "White", "value": "offers-color-white" },
+                { "name": "Black", "value": "offers-color-black" },
+                { "name": "Saudia green", "value": "offers-color-green" },
+                { "name": "Gold", "value": "offers-color-gold" }
+              ]
+            },
+            {
+              "name": "Font type",
+              "children": [
+                { "name": "Default", "value": "offers-font-default" },
+                { "name": "Heading (serif)", "value": "offers-font-serif" },
+                { "name": "Monospace", "value": "offers-font-mono" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "offers-gallery",
+      "components": [
+        "offer"
+      ]
+    }
+  ]
+}

@@ -5,22 +5,18 @@
 
 .hero {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  min-height: 480px;
 }
 
-.hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
-}
-
+/* Background image fills the hero. */
 .hero picture {
   position: absolute;
   z-index: -1;
   inset: 0;
-  object-fit: cover;
   box-sizing: border-box;
 }
 
@@ -30,8 +26,118 @@
   height: 100%;
 }
 
+/* Subtle dark overlay so the booking engine reads clearly over the photo. */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgb(0 0 0 / 15%), rgb(0 0 0 / 35%));
+}
+
+.hero h1 {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #fff;
+}
+
+/* Booking engine ---------------------------------------------------------- */
+.hero-booking {
+  width: 100%;
+  max-width: 1080px;
+  background: rgb(255 255 255 / 96%);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgb(0 0 0 / 20%);
+  padding: 20px;
+}
+
+.hero-booking-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.hero-booking-tab {
+  border: 0;
+  background: transparent;
+  padding: 8px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #4a4a4a;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.hero-booking-tab[aria-selected='true'] {
+  background: #005e5d;
+  color: #fff;
+}
+
+.hero-booking-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  align-items: end;
+}
+
+.hero-booking-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hero-booking-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b6b6b;
+}
+
+.hero-booking-input {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 15px;
+  color: #1a1a1a;
+  background: #fff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.hero-booking-input:focus {
+  outline: 2px solid #005e5d;
+  border-color: #005e5d;
+}
+
+.hero-booking-submit {
+  border: 0;
+  background: #005e5d;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 14px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.hero-booking-submit:hover {
+  background: #00817f;
+}
+
 @media (width >= 900px) {
   .hero {
-    padding: 40px 32px;
+    padding: 80px 32px;
+    min-height: 560px;
+  }
+
+  .hero-booking-form {
+    grid-template-columns: 1.2fr 1.2fr 1fr 1fr 1fr auto;
+  }
+
+  .hero-booking-submit {
+    align-self: end;
   }
 }

@@ -1,0 +1,160 @@
+{
+  "templates": [
+    {
+      "name": "home",
+      "urls": [
+        "https://www.saudia.com/"
+      ],
+      "representativeUrl": "https://www.saudia.com/",
+      "description": "Saudia homepage: hero promo carousel, booking widget, fare/offer card grids, and full-width promotional banners.",
+      "blocks": [
+        {
+          "name": "hero-promo",
+          "instances": [
+            ".swiper-slide__content",
+            ".promoImagelinklist.promoImagelinklist--content-embedded"
+          ]
+        },
+        {
+          "name": "fragment",
+          "instances": [
+            "mat-tab-group",
+            ".booking-widget"
+          ]
+        },
+        {
+          "name": "cards-feature",
+          "instances": [
+            ".featuredlist",
+            ".offer-content",
+            ".offerforyou-content"
+          ]
+        }
+      ],
+      "urlPattern": "/",
+      "sections": [
+        {
+          "id": "s1-hero",
+          "name": "Hero promo carousel",
+          "selector": [
+            ".swiper-slide__content",
+            ".swiper-container"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "s2-booking",
+          "name": "Flight search / booking widget",
+          "selector": [
+            "mat-tab-group"
+          ],
+          "style": null,
+          "blocks": [
+            "fragment"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "s3-fares",
+          "name": "Best fares grid",
+          "selector": [
+            ".featuredlist"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": [
+            ".featuredlist__header",
+            ".featuredlist__title"
+          ]
+        },
+        {
+          "id": "s4-plan",
+          "name": "Plan your next trip tiles",
+          "selector": [
+            ".offer-section",
+            ".offerforyou-content"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": [
+            ".UpdateHeading"
+          ]
+        },
+        {
+          "id": "s5-deals",
+          "name": "Flight + Hotel Deals banner",
+          "selector": [
+            ".promoImagelinklist.promoImagelinklist--content-embedded"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "s6-miles",
+          "name": "Shop with Miles banner",
+          "selector": [
+            ".promoImagelinklist.promoImagelinklist--content-embedded"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "s7-newsletter",
+          "name": "Be first to know newsletter banner",
+          "selector": [
+            ".promoImagelinklist.promoImagelinklist--content-embedded"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "s8-experiences",
+          "name": "Exceptional experiences articles",
+          "selector": [
+            ".offer-content",
+            ".UpdateHeading"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": [
+            ".UpdateHeading"
+          ]
+        },
+        {
+          "id": "s9-visitsaudi",
+          "name": "Visit Saudi co-brand banner",
+          "selector": [
+            ".promoImagelinklist.promoImagelinklist--content-embedded"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "projectType": "xwalk"
+  }
+}
