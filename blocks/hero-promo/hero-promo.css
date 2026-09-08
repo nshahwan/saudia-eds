@@ -1,0 +1,532 @@
+.hero-promo-container .hero-promo-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.hero-promo {
+  position: relative;
+  padding: 40px 24px;
+  min-height: 300px;
+}
+
+.hero-promo h1,
+.hero-promo h2,
+.hero-promo h3,
+.hero-promo p,
+.hero-promo a {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+
+  /* Banner text is white over the background image. */
+  color: #fff;
+}
+
+/* Standalone promo banners (everything except the hero carousel) align to the
+   page content width (matching the page margin) rather than running full-bleed. */
+.hero-promo-wrapper:not(.hero-promo-has-booking) {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.hero-promo-wrapper:not(.hero-promo-has-booking) .hero-promo {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Keep standalone-banner text within the box: bound its width and let the
+   banner grow to fit the content so nothing spills past the green edges. */
+/* stylelint-disable-next-line no-descending-specificity */
+.hero-promo-wrapper:not(.hero-promo-has-booking) .hero-promo > div {
+  max-width: 60%;
+  margin: 0;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.hero-promo-wrapper:not(.hero-promo-has-booking) .hero-promo h1,
+.hero-promo-wrapper:not(.hero-promo-has-booking) .hero-promo h2,
+.hero-promo-wrapper:not(.hero-promo-has-booking) .hero-promo h3,
+.hero-promo-wrapper:not(.hero-promo-has-booking) .hero-promo p {
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  overflow-wrap: break-word;
+}
+
+@media (width >= 900px) {
+  .hero-promo-wrapper:not(.hero-promo-has-booking) {
+    padding: 0 32px;
+  }
+}
+
+.hero-promo picture {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  object-fit: cover;
+  box-sizing: border-box;
+}
+
+.hero-promo img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+@media (width >= 900px) {
+  .hero-promo {
+    padding: 40px 32px;
+  }
+}
+
+/* Hero carousel ----------------------------------------------------------- */
+.hero-carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Carousel slides show the COMPLETE image (no crop): the picture flows in
+   normally at its natural aspect ratio and the slide text overlays it. */
+/* stylelint-disable no-descending-specificity */
+.hero-carousel-slide .hero-promo {
+  min-height: 0;
+  padding: 0;
+  display: block;
+  width: 100%;
+}
+
+/* Reset the authored image wrapper (div > p) so the picture centers with no
+   stray margin/padding pushing it sideways. */
+.hero-carousel-slide .hero-promo > div,
+.hero-carousel-slide .hero-promo > div > p {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.hero-carousel-slide .hero-promo picture {
+  position: static;
+  z-index: auto;
+  display: block;
+}
+
+.hero-carousel-slide .hero-promo img {
+  /* Show the COMPLETE image, never cropped: size to natural dimensions,
+     bounded by the container width and a height cap, and centered. */
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+  margin-inline: auto;
+}
+/* stylelint-enable no-descending-specificity */
+
+/* Overlay the slide's text (heading / CTA) on the image. */
+/* stylelint-disable-next-line no-descending-specificity */
+.hero-carousel-slide .hero-promo > div:not(:has(picture)) {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 48px;
+  z-index: 1;
+}
+
+.hero-carousel-track {
+  display: flex;
+  align-items: center;
+  transition: transform 0.6s ease;
+}
+
+.hero-carousel-slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+
+  /* Center the (contained) image within the full-width slide. */
+  display: flex;
+  justify-content: center;
+}
+
+.hero-carousel-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 3;
+}
+
+.hero-carousel-dot {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 55%);
+  cursor: pointer;
+  padding: 0;
+}
+
+.hero-carousel-dot[aria-selected='true'] {
+  background: #fff;
+}
+
+.hero-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 30%);
+  color: #fff;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.hero-carousel-prev {
+  left: 16px;
+}
+
+.hero-carousel-next {
+  right: 16px;
+}
+
+/* Booking engine + fares stack below the carousel (first hero-promo only) - */
+.hero-promo-has-booking {
+  position: relative;
+}
+
+.hero-promo-has-booking .hero-booking {
+  position: relative;
+  z-index: 2;
+
+  /* Pull up so the card overlaps the bottom edge of the carousel. Aligned to
+     the same 1200px content column (24px gutters) as the fares/offers below. */
+  margin: -56px auto 0;
+  width: calc(100% - 48px);
+  max-width: 1200px;
+  background: rgb(255 255 255 / 96%);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgb(0 0 0 / 20%);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Top row: primary tabs (left) + partner/service tabs (right). */
+.hero-booking-toprow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.hero-booking-toptabs-left,
+.hero-booking-toptabs-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.hero-booking-toptab {
+  border: 0;
+  background: transparent;
+  padding: 10px 6px;
+  margin-right: 14px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a1a1a;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.hero-booking-toptab:hover {
+  color: #005e5d;
+}
+
+/* Selected panel tab: bold with a green underline (matches source). */
+.hero-booking-toptabs-left .hero-booking-toptab[aria-selected='true'] {
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.hero-booking-toptabs-left .hero-booking-toptab[aria-selected='true']::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -13px;
+  height: 3px;
+  background: #00954c;
+}
+
+.hero-booking-toptabs-right .hero-booking-toptab {
+  color: #007a3d;
+  font-weight: 600;
+  margin-right: 0;
+  margin-left: 20px;
+}
+
+.hero-booking-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.hero-booking-tab {
+  border: 0;
+  background: transparent;
+  padding: 8px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #4a4a4a;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.hero-booking-tab[aria-selected='true'] {
+  background: #005e5d;
+  color: #fff;
+}
+
+.hero-booking-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  align-items: end;
+}
+
+.hero-booking-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hero-booking-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b6b6b;
+}
+
+.hero-booking-input {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 15px;
+  color: #1a1a1a;
+  background: #fff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.hero-booking-input:focus {
+  outline: 2px solid #005e5d;
+  border-color: #005e5d;
+}
+
+.hero-booking-submit {
+  border: 0;
+  background: #005e5d;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 14px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.hero-booking-submit:hover {
+  background: #00817f;
+}
+
+/* Manage / Check-in lookup panel */
+.hero-booking-radios {
+  display: flex;
+  gap: 28px;
+  margin-bottom: 16px;
+}
+
+.hero-booking-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+
+.hero-booking-radio input {
+  accent-color: #007a3d;
+  width: 18px;
+  height: 18px;
+}
+
+.hero-booking-tellmore {
+  display: inline-block;
+  margin-top: 12px;
+  color: #007a3d;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* Blue travel-requirements info strip */
+.hero-booking-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 20px -20px -20px;
+  padding: 16px 24px;
+  background: #0a6ebd;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 0 0 12px 12px;
+  font-size: 15px;
+}
+
+.hero-booking-info,
+.hero-booking-info span {
+  color: #fff;
+}
+
+.hero-booking-info-cta {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Flight status / Flight schedule nav tabs stay black (not link-colored). */
+.hero-booking-toptabs-left .hero-booking-toptab-nav {
+  color: #1a1a1a;
+}
+
+@media (width >= 900px) {
+  .hero-booking-form {
+    grid-template-columns: 1.2fr 1.2fr 1fr 1fr 1fr auto;
+  }
+
+  /* Lookup form: two wide inputs + submit. */
+  .hero-booking-form-lookup {
+    grid-template-columns: 1fr 1fr auto;
+  }
+
+  .hero-booking-submit {
+    align-self: end;
+  }
+}
+
+/* Best fares from Jeddah -------------------------------------------------- */
+.best-fares {
+  /* 5cm gap below the hero/booking engine. */
+  margin-top: 5cm;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 24px 40px;
+}
+
+.best-fares-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 24px;
+}
+
+.best-fares-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.best-fares-card {
+  display: block;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #1a1a1a;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 10%);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #fff;
+}
+
+.best-fares-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 16%);
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.best-fares-card picture {
+  display: block;
+  aspect-ratio: 3 / 2;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.best-fares-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.best-fares-card-body {
+  padding: 16px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.best-fares-card-body h3 {
+  margin: 0 0 6px;
+  font-size: 20px;
+}
+
+.best-fares-price {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #005e5d;
+}
+
+.best-fares-sub {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #6b6b6b;
+}
+
+@media (width >= 600px) {
+  .best-fares-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width >= 900px) {
+  .best-fares-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Align all hero-area content to the page margin (32px gutters ≥900px, to
+   match the global .section content column). */
+@media (width >= 900px) {
+  .best-fares {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .hero-promo-has-booking .hero-booking {
+    /* Match the cards/gallery content box (1200 − 2×32px gutters = 1136px). */
+    width: calc(100% - 64px);
+    max-width: 1136px;
+  }
+}

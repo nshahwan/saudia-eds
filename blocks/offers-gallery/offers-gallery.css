@@ -1,0 +1,204 @@
+/* Exclusive Offers for You — authorable bento gallery. */
+
+.offers-gallery .exclusive-offers {
+  max-width: 1200px;
+  margin: 48px auto 0;
+  padding: 0 24px 48px;
+}
+
+.offers-gallery .exclusive-offers-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.offers-gallery .exclusive-offers-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.offers-gallery .exclusive-offers-explore {
+  color: #005e5d;
+  font-weight: 600;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+.offers-gallery .exclusive-offers-explore::after {
+  content: ' ›';
+}
+
+.offers-gallery .exclusive-offers-gallery {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.offers-gallery .exclusive-offers-card {
+  position: relative;
+  display: block;
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  min-height: 260px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.offers-gallery .exclusive-offers-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 18%);
+}
+
+.offers-gallery .exclusive-offers-card picture {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.offers-gallery .exclusive-offers-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.offers-gallery .exclusive-offers-card-body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background: linear-gradient(180deg, rgb(0 0 0 / 0%) 45%, rgb(0 0 0 / 65%));
+}
+
+.offers-gallery .exclusive-offers-card-body h3 {
+  margin: 0 0 8px;
+  font-size: 26px;
+  font-weight: 700;
+  max-width: 70%;
+}
+
+.offers-gallery .exclusive-offers-card-body p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.45;
+  max-width: 70%;
+  color: rgb(255 255 255 / 90%);
+}
+
+/* Circular green arrow, bottom-right of each card. */
+.offers-gallery .exclusive-offers-arrow {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #00954c;
+  color: #fff;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+/* --- Authorable: text position ----------------------------------------- */
+.offers-gallery .offers-pos-bottom-left .exclusive-offers-card-body {
+  justify-content: flex-end;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.offers-gallery .offers-pos-bottom-center .exclusive-offers-card-body {
+  justify-content: flex-end;
+  align-items: center;
+  text-align: center;
+}
+
+.offers-gallery .offers-pos-bottom-right .exclusive-offers-card-body {
+  justify-content: flex-end;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.offers-gallery .offers-pos-top-left .exclusive-offers-card-body {
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.offers-gallery .offers-pos-center .exclusive-offers-card-body {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* --- Authorable: text color -------------------------------------------- */
+.offers-gallery .offers-color-white .exclusive-offers-card-body,
+.offers-gallery .offers-color-white .exclusive-offers-card-body h3,
+.offers-gallery .offers-color-white .exclusive-offers-card-body p {
+  color: #fff;
+}
+
+.offers-gallery .offers-color-black .exclusive-offers-card-body,
+.offers-gallery .offers-color-black .exclusive-offers-card-body h3,
+.offers-gallery .offers-color-black .exclusive-offers-card-body p {
+  color: #000;
+}
+
+.offers-gallery .offers-color-green .exclusive-offers-card-body,
+.offers-gallery .offers-color-green .exclusive-offers-card-body h3,
+.offers-gallery .offers-color-green .exclusive-offers-card-body p {
+  color: #005e5d;
+}
+
+.offers-gallery .offers-color-gold .exclusive-offers-card-body,
+.offers-gallery .offers-color-gold .exclusive-offers-card-body h3,
+.offers-gallery .offers-color-gold .exclusive-offers-card-body p {
+  color: #c9a227;
+}
+
+/* --- Authorable: font type --------------------------------------------- */
+.offers-gallery .offers-font-serif .exclusive-offers-card-body {
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.offers-gallery .offers-font-mono .exclusive-offers-card-body {
+  font-family: ui-monospace, 'Courier New', monospace;
+}
+
+/* Bento grid: feature (large) + tall + two stacked tiles on desktop. */
+@media (width >= 900px) {
+  .offers-gallery .exclusive-offers {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .offers-gallery .exclusive-offers-gallery {
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 20px;
+    min-height: 640px;
+  }
+
+  .offers-gallery .offers-size-feature {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .offers-gallery .offers-size-tall {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .offers-gallery .offers-size-small {
+    grid-column: 3;
+  }
+}

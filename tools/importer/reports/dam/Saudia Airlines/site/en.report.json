@@ -1,0 +1,27 @@
+{
+  "status": "success",
+  "url": "https://www.saudia.com/",
+  "path": "dam/Saudia Airlines/site/en",
+  "timestamp": "2026-09-07T11:57:33.540Z",
+  "title": "Saudia | Book flights | Hotels | Holidays",
+  "template": "home",
+  "blocks": [
+    "hero-promo",
+    "hero-promo",
+    "hero-promo",
+    "hero-promo",
+    "hero-promo",
+    "hero-promo",
+    "hero-promo",
+    "hero-promo",
+    "hero-promo",
+    "hero-promo",
+    "hero-promo",
+    "hero-promo",
+    "hero-promo",
+    "fragment",
+    "cards-feature",
+    "cards-feature",
+    "cards-feature"
+  ]
+}

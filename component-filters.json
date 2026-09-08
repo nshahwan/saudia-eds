@@ -19,6 +19,12 @@
     ]
   },
   {
+    "id": "cards-feature",
+    "components": [
+      "card"
+    ]
+  },
+  {
     "id": "cards",
     "components": [
       "card"
@@ -37,6 +43,12 @@
       "image",
       "button",
       "title"
+    ]
+  },
+  {
+    "id": "offers-gallery",
+    "components": [
+      "offer"
     ]
   }
 ]

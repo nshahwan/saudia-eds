@@ -1,20 +1,234 @@
+/* Saudia footer — mobile-first. Dark background, accordion columns on mobile,
+   multi-column grid on desktop. */
+
 footer {
-  background-color: var(--light-color);
-  font-size: var(--body-font-size-xs);
+  background-color: #0a3a34;
+  color: #fff;
+  font-size: 14px;
 }
 
-footer .footer > div {
-  margin: auto;
+footer .footer-inner {
   max-width: 1200px;
+  margin: 0 auto;
   padding: 40px 24px 24px;
 }
 
-footer .footer p {
+footer a {
+  color: #fff;
+  text-decoration: none;
+}
+
+footer a:hover,
+footer .footer-column a:hover,
+footer .footer-legal-links a:hover {
+  text-decoration: underline;
+}
+
+/* Newsletter ------------------------------------------------------------- */
+.footer-newsletter {
+  border-bottom: 1px solid rgb(255 255 255 / 20%);
+  padding-bottom: 28px;
+  margin-bottom: 28px;
+}
+
+.footer-newsletter-text h2,
+.footer-newsletter-text h3 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.footer-newsletter-text p {
+  margin: 0 0 16px;
+  color: rgb(255 255 255 / 80%);
+}
+
+.footer-subscribe-form {
+  display: flex;
+  gap: 8px;
+  max-width: 480px;
+}
+
+.footer-subscribe-input {
+  flex: 1;
+  border: 1px solid rgb(255 255 255 / 40%);
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 15px;
+  background: #fff;
+  color: #1a1a1a;
+}
+
+.footer-subscribe-button {
+  border: 0;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 700;
+  background: #c9a227;
+  color: #0a3a34;
+  cursor: pointer;
+}
+
+.footer-subscribe-button:hover {
+  background: #b8921f;
+}
+
+/* Link columns (mobile: accordion) --------------------------------------- */
+.footer-columns {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-column {
+  border-bottom: 1px solid rgb(255 255 255 / 15%);
+}
+
+.footer-column-title {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 16px 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.footer-column-title::after {
+  content: '+';
+  position: absolute;
+  right: 4px;
+  font-size: 20px;
+}
+
+.footer-column-title[aria-expanded='true']::after {
+  content: '−';
+}
+
+.footer-column ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: none;
+}
+
+.footer-column-title[aria-expanded='true'] + ul {
+  display: block;
+  padding-bottom: 12px;
+}
+
+.footer-column li {
   margin: 0;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
+.footer-column a {
+  display: block;
+  padding: 8px 0;
+  color: rgb(255 255 255 / 85%);
+  font-size: 14px;
+}
+
+/* Media strip (app / social / awards / payment) -------------------------- */
+.footer-media {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 28px 0;
+  border-top: 1px solid rgb(255 255 255 / 15%);
+  margin-top: 8px;
+}
+
+.footer-media-group h4 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(255 255 255 / 80%);
+}
+
+.footer-media-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-media-row img {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+
+.footer-media-group:last-child .footer-media-row img {
+  height: 26px;
+  background: #fff;
+  border-radius: 4px;
+  padding: 2px;
+}
+
+/* Legal bar -------------------------------------------------------------- */
+.footer-legal {
+  border-top: 1px solid rgb(255 255 255 / 20%);
+  padding-top: 20px;
+}
+
+.footer-legal-links {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.footer-legal-links a {
+  color: rgb(255 255 255 / 85%);
+  font-size: 13px;
+}
+
+.footer-copyright {
+  margin: 0;
+  color: rgb(255 255 255 / 70%);
+  font-size: 13px;
+}
+
+/* Desktop ---------------------------------------------------------------- */
 @media (width >= 900px) {
-  footer .footer > div {
-    padding: 40px 32px 24px;
+  footer .footer-inner {
+    padding: 48px 32px 24px;
+  }
+
+  .footer-columns {
+    flex-flow: row wrap;
+    gap: 24px 40px;
+  }
+
+  .footer-column {
+    flex: 1 1 180px;
+    border-bottom: 0;
+  }
+
+  .footer-column-title {
+    padding: 0 0 12px;
+    cursor: default;
+    font-size: 15px;
+  }
+
+  /* No accordion on desktop: hide the +/- and always show the lists. */
+  .footer-column-title::after {
+    content: '';
+  }
+
+  .footer-column ul {
+    display: block;
+  }
+
+  .footer-media {
+    flex-flow: row wrap;
+    gap: 40px;
+    justify-content: space-between;
   }
 }
