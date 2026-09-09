@@ -61,87 +61,10 @@ async function loadFonts() {
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-/**
- * Restructures the default-content "Exceptional experiences with Saudia"
- * section into a two-column table: the title (and intro) on the left, the
- * experience items on the right. Each item lays out as image-left / text-right
- * (title, body, "Learn more" link).
- * @param {Element} main The container element
- */
-function buildExceptionalExperiences(main) {
-  const heading = [...main.querySelectorAll('h2')]
-    .find((h) => /exceptional experiences/i.test(h.textContent));
-  if (!heading) return;
-
-  const section = heading.closest('.section') || heading.parentElement;
-  if (!section || section.classList.contains('experiences-section')) return;
-
-  const list = section.querySelector('ul');
-  if (!list) return;
-
-  section.classList.add('experiences-section');
-
-  // Left column: heading + any intro paragraphs before the list.
-  const left = document.createElement('div');
-  left.className = 'experiences-title';
-  let node = heading;
-  const toMove = [];
-  while (node && node !== list) {
-    toMove.push(node);
-    node = node.nextElementSibling;
-  }
-  toMove.forEach((el) => left.append(el));
-
-  // Right column: each <li> becomes an image-left / text-right row.
-  const right = document.createElement('div');
-  right.className = 'experiences-items';
-  [...list.children].forEach((li) => {
-    const item = document.createElement('div');
-    item.className = 'experiences-item';
-
-    const media = document.createElement('div');
-    media.className = 'experiences-item-media';
-    const pic = li.querySelector('picture');
-    if (pic) media.append(pic);
-
-    const body = document.createElement('div');
-    body.className = 'experiences-item-body';
-    const itemHeading = li.querySelector('h3');
-    if (itemHeading) body.append(itemHeading);
-    // The body paragraph and the "Learn more" link are the remaining <p>s.
-    [...li.querySelectorAll('p')].forEach((p) => {
-      if (p.querySelector('picture')) return;
-      const link = p.querySelector('a');
-      if (link && /^\s*learn more\b/i.test(link.textContent)) {
-        link.classList.add('experiences-learn-more');
-        p.className = 'experiences-item-cta';
-      }
-      body.append(p);
-    });
-
-    item.append(media, body);
-    right.append(item);
-  });
-
-  list.remove();
-  section.textContent = '';
-  const table = document.createElement('div');
-  table.className = 'experiences-table';
-  // Mark as an already-loaded block so EDS's decorateBlocks/loadBlock skips it
-  // (a lone single-class div is otherwise mistaken for a block to lazy-load,
-  // producing a "failed to load block experiences-table" console error).
-  table.dataset.blockStatus = 'loaded';
-  table.append(left, right);
-  section.append(table);
-}
-
-/**
- * Builds all synthetic blocks in a container element.
- * @param {Element} main The container element
- */
-function buildAutoBlocks(main) {
+function buildAutoBlocks() {
   try {
-    buildExceptionalExperiences(main);
+    // Exceptional experiences is now an authorable `experiences` block
+    // (see blocks/experiences). No synthetic auto-blocks needed here.
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

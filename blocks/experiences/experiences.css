@@ -1,0 +1,90 @@
+/* Exceptional experiences with Saudia — two-column authorable layout. */
+
+.experiences .experiences-table {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.experiences .experiences-title h2 {
+  margin: 0 0 12px;
+  font-size: 40px;
+  line-height: 1.15;
+}
+
+.experiences .experiences-title p {
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.experiences .experiences-items {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.experiences .experiences-item {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.experiences .experiences-item-media picture,
+.experiences .experiences-item-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.experiences .experiences-item-body h3 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #000;
+}
+
+.experiences .experiences-item-body p {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #000;
+}
+
+.experiences .experiences-item-body h3 a,
+.experiences .experiences-item-body p a {
+  color: #000;
+  text-decoration: none;
+}
+
+/* The "Learn more" link is green. */
+.experiences .experiences-item-body a.experiences-learn-more {
+  font-weight: 600;
+  color: #005e5d;
+  text-decoration: none;
+}
+
+.experiences .experiences-item-body a.experiences-learn-more:hover {
+  text-decoration: underline;
+}
+
+@media (width >= 900px) {
+  /* Title on the left, items on the right. */
+  .experiences .experiences-table {
+    grid-template-columns: 320px 1fr;
+    gap: 48px;
+  }
+
+  /* Each item: image left, text right. */
+  .experiences .experiences-item {
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+}
