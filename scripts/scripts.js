@@ -123,12 +123,15 @@ function buildExceptionalExperiences(main) {
     right.append(item);
   });
 
-  const table = document.createElement('div');
-  table.className = 'experiences-table';
-  table.append(left, right);
-
   list.remove();
   section.textContent = '';
+  const table = document.createElement('div');
+  table.className = 'experiences-table';
+  // Mark as an already-loaded block so EDS's decorateBlocks/loadBlock skips it
+  // (a lone single-class div is otherwise mistaken for a block to lazy-load,
+  // producing a "failed to load block experiences-table" console error).
+  table.dataset.blockStatus = 'loaded';
+  table.append(left, right);
   section.append(table);
 }
 

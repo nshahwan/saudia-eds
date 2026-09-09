@@ -327,12 +327,20 @@ export default function decorate(block) {
   const carousel = buildCarousel(blocks);
   firstWrapper.classList.add('hero-promo-has-booking');
   firstWrapper.prepend(carousel);
-  // Remove everything else in the hero section: the now-empty sibling promo
-  // wrappers AND the source's default-content strip (slide titles +
-  // arrow_back/arrow_forward/pause carousel controls), which the carousel
-  // replaces. Only the first wrapper (carousel + booking + sections) remains.
+  // Remove ONLY the consumed sibling hero-promo wrappers (their blocks now live
+  // in the carousel) and the source's leftover carousel default-content strip
+  // (slide titles + arrow_back/arrow_forward/pause). Never remove other blocks
+  // in the section (fragment, cards-feature, offers-gallery, cards, etc.).
+  wrappers.forEach((w) => { if (w !== firstWrapper) w.remove(); });
+  // The default-content strip is a plain wrapper holding the thumbnail titles
+  // and the "arrow_backarrow_forwardpause" controls — identify it by that text.
   [...section.children].forEach((child) => {
-    if (child !== firstWrapper) child.remove();
+    if (child === firstWrapper) return;
+    if (child.classList.contains('hero-promo-wrapper')) return;
+    const txt = (child.textContent || '').replace(/\s+/g, '');
+    if (/arrow_back|arrow_forward|pause/i.test(txt) && !child.querySelector('.hero-promo, .cards, .fragment, .offers-gallery, .cards-feature')) {
+      child.remove();
+    }
   });
 
   // Booking engine overlaid on the carousel — exactly once on the page
