@@ -308,6 +308,13 @@ function buildCarousel(slides) {
  * @param {Element} block The hero-promo block element
  */
 export default function decorate(block) {
+  // Inside the Universal Editor the page is loaded in an iframe. Skip the
+  // render-only demo transforms (carousel, injected booking engine, and the
+  // de-duplication that removes authored sections) so every authored
+  // hero-promo block stays selectable and its text/image/link editable.
+  // The live site is top-level, so it still gets the full experience.
+  if (window.self !== window.top) return;
+
   // Only the page's very FIRST hero-promo becomes the hero carousel (with the
   // booking engine, fares, and offers). Every later hero-promo — the hero's
   // sibling slides AND the standalone promo banners further down the page — is
