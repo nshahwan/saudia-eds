@@ -214,11 +214,11 @@ function buildBookingEngine() {
 
 // Best fares from Jeddah — sourced from saudia.com, deduplicated.
 const BEST_FARES = [
-  { city: 'AlUla', price: '1173', img: '/content/dam/saudia-eds/fare-alula.jpg' },
-  { city: 'Cairo', price: '1092', img: '/content/dam/saudia-eds/fare-cairo.jpg' },
-  { city: 'Istanbul', price: '1752', img: '/content/dam/saudia-eds/fare-istanbul.jpg' },
-  { city: 'London', price: '3301', img: '/content/dam/saudia-eds/fare-london.jpg' },
-  { city: 'Paris', price: '3169', img: '/content/dam/saudia-eds/fare-paris.jpg' },
+  { city: 'AlUla', price: '1173', img: 'https://www.saudia.com/-/media/SaudiaWebApp/data/media/img/Live-images/Destinations/Batch-2/Large/AlUla/L-AlUla-1.ashx?rev=d031af8614364b659d4b5d2a3c00b5aa' },
+  { city: 'Cairo', price: '1092', img: 'https://www.saudia.com/-/media/SaudiaWebApp/data/media/img/Live-images/Destinations/Batch-2/Large/Cairo/L-cairo-1.ashx?rev=d92e9ed466174eecbfeb6c49f0e6baa6' },
+  { city: 'Istanbul', price: '1752', img: 'https://www.saudia.com/-/media/SaudiaWebApp/data/media/img/Live-images/Destinations/ffares-nov/L-istanbul-1.ashx?rev=7233038e594749f88f9a993255a90675' },
+  { city: 'London', price: '3301', img: 'https://www.saudia.com/-/media/SaudiaWebApp/data/media/img/Live-images/Destinations/Batch-2/Large/London/Large-(1).ashx?rev=66b64e443c324d388acda1718e97cc0f' },
+  { city: 'Paris', price: '3169', img: 'https://www.saudia.com/-/media/SaudiaWebApp/data/media/img/Live-images/Destinations/Batch-2/Large/Paris/Large-(2).ashx?rev=c12cb69d60f84a99a00003b41c1eaa19' },
 ];
 
 /** Build the "Best fares from Jeddah" section with fare cards. */
