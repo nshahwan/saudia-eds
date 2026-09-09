@@ -13,6 +13,7 @@ const DRAG_THRESHOLD = 4;
 let editMode = false;
 let selectedEl = null;
 let editingEl = null;
+const translations = new WeakMap();
 
 function isChrome(el) {
   return !el || el.closest(CHROME_SEL);
@@ -25,11 +26,11 @@ function targetFrom(node) {
 }
 
 function getTranslate(el) {
-  return el.__editTranslate || { x: 0, y: 0 };
+  return translations.get(el) || { x: 0, y: 0 };
 }
 
 function setTranslate(el, x, y) {
-  el.__editTranslate = { x, y };
+  translations.set(el, { x, y });
   el.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
 }
 
@@ -138,7 +139,7 @@ function resetElement() {
   selectedEl.style.fontWeight = '';
   selectedEl.style.width = '';
   selectedEl.style.height = '';
-  selectedEl.__editTranslate = { x: 0, y: 0 };
+  translations.set(selectedEl, { x: 0, y: 0 });
   selectedEl.classList.remove('edit-resizable');
 }
 

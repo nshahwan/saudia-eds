@@ -18,7 +18,11 @@
 }
 
 #edit-toggle:hover { background: #0a3a34; }
-#edit-toggle.active { background: #c9a227; color: #1a1a1a; }
+
+#edit-toggle.active {
+  background: #c9a227;
+  color: #1a1a1a;
+}
 
 #edit-toolbar {
   position: fixed;
@@ -58,7 +62,10 @@
   cursor: pointer;
 }
 
-#edit-toolbar button:hover { background: #f1efe8; border-color: #005e5d; }
+#edit-toolbar button:hover {
+  background: #f1efe8;
+  border-color: #005e5d;
+}
 
 #edit-toolbar .edit-color-wrap {
   display: inline-flex;
@@ -93,7 +100,6 @@ body.edit-mode h6,
 body.edit-mode p,
 body.edit-mode a,
 body.edit-mode li,
-body.edit-mode button:not(#edit-toggle):not(#edit-toolbar button),
 body.edit-mode span,
 body.edit-mode blockquote,
 body.edit-mode figcaption,
