@@ -166,6 +166,16 @@ async function loadLazy(doc) {
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
 
+  // Enable Universal Editor authoring instrumentation on preview/localhost.
+  if (
+    window.location.hostname === 'localhost'
+    || window.location.hostname.endsWith('.aem.page')
+    || window.location.hostname.endsWith('.hlx.page')
+  ) {
+    // eslint-disable-next-line import/no-cycle
+    import('./editor-support.js');
+  }
+
   import('./edit-mode.js').then(({ default: initEditMode }) => initEditMode());
 }
 

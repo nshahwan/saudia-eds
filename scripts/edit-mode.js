@@ -211,6 +211,8 @@ function setEditMode(on) {
 
 export default function initEditMode() {
   if (document.getElementById('edit-toggle')) return;
+  // Skip inside the Universal Editor canvas (page is loaded in an iframe there).
+  if (window.top !== window.self) return;
 
   loadCSS(`${window.hlx.codeBasePath}/styles/edit-mode.css`);
 
