@@ -1,19 +1,31 @@
 /*
- * Session-only visual edit mode.
- * Toggle on to move any text freely, resize its box, edit the words,
- * and recolor it. Nothing is persisted — a reload restores the page.
+ * Session-only controlled text styling.
+ * Toggle on, click any text, then restyle it from a Style panel:
+ * font, size, position (alignment) and colour. Text wording can also be
+ * edited inline (double-click). Nothing is persisted — a reload restores
+ * the page.
  */
 
 import { loadCSS } from './aem.js';
 
 const TEXT_SEL = 'h1,h2,h3,h4,h5,h6,p,a,li,button,span,strong,em,b,i,blockquote,figcaption,label,th,td,dt,dd,summary';
-const CHROME_SEL = '#edit-toggle,#edit-toolbar';
-const DRAG_THRESHOLD = 4;
+const CHROME_SEL = '#edit-toggle,#edit-panel';
+
+const FONTS = [
+  ['Default', ''],
+  ['Roboto', 'roboto, sans-serif'],
+  ['Roboto Condensed', 'roboto-condensed, sans-serif'],
+  ['Georgia', 'georgia, serif'],
+  ['Arial', 'arial, helvetica, sans-serif'],
+  ['Courier', '"courier new", monospace'],
+];
+const SIZES = [12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64, 72];
+const SWATCHES = ['#005e5d', '#0a3a34', '#007a3d', '#00817f', '#c9a227', '#1a1a1a', '#ffffff'];
+const ALIGNS = [['left', 'L', 'Align left'], ['center', 'C', 'Align centre'], ['right', 'R', 'Align right']];
 
 let editMode = false;
 let selectedEl = null;
 let editingEl = null;
-const translations = new WeakMap();
 
 function isChrome(el) {
   return !el || el.closest(CHROME_SEL);
@@ -25,35 +37,47 @@ function targetFrom(node) {
   return el;
 }
 
-function getTranslate(el) {
-  return translations.get(el) || { x: 0, y: 0 };
+function rgbToHex(rgb) {
+  const m = rgb && rgb.match(/\d+/g);
+  if (!m) return '#000000';
+  return `#${m.slice(0, 3).map((n) => Number(n).toString(16).padStart(2, '0')).join('')}`;
 }
 
-function setTranslate(el, x, y) {
-  translations.set(el, { x, y });
-  el.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
+function showPanel(on) {
+  const panel = document.getElementById('edit-panel');
+  if (panel) panel.classList.toggle('visible', on);
 }
 
-function positionToolbar() {
-  const bar = document.getElementById('edit-toolbar');
-  if (bar) bar.classList.toggle('visible', !!selectedEl);
+function syncPanel() {
+  if (!selectedEl) return;
+  const cs = getComputedStyle(selectedEl);
+  const size = document.getElementById('edit-size');
+  if (size) size.value = String(Math.round(parseFloat(cs.fontSize)));
+  const color = document.getElementById('edit-color');
+  if (color) color.value = rgbToHex(cs.color);
+  const font = document.getElementById('edit-font');
+  if (font) {
+    const family = cs.fontFamily.toLowerCase();
+    const match = FONTS.find(([, v]) => v && family.includes(v.split(',')[0].replace(/"/g, '').trim()));
+    font.value = match ? match[1] : '';
+  }
+  document.querySelectorAll('#edit-panel .edit-align').forEach((b) => {
+    b.classList.toggle('active', b.dataset.align === cs.textAlign);
+  });
 }
 
 function select(el) {
-  if (selectedEl === el) return;
-  if (selectedEl) selectedEl.classList.remove('edit-selected');
+  if (selectedEl && selectedEl !== el) selectedEl.classList.remove('edit-selected');
   selectedEl = el;
-  if (selectedEl) selectedEl.classList.add('edit-selected');
-  const color = document.getElementById('edit-color');
-  if (color && selectedEl) {
-    const c = getComputedStyle(selectedEl).color;
-    const m = c.match(/\d+/g);
-    if (m) {
-      const hex = `#${m.slice(0, 3).map((n) => Number(n).toString(16).padStart(2, '0')).join('')}`;
-      color.value = hex;
-    }
-  }
-  positionToolbar();
+  if (el) el.classList.add('edit-selected');
+  showPanel(!!el);
+  syncPanel();
+}
+
+function deselect() {
+  if (selectedEl) selectedEl.classList.remove('edit-selected');
+  selectedEl = null;
+  showPanel(false);
 }
 
 function finishTextEdit() {
@@ -72,38 +96,23 @@ function startTextEdit(el) {
   el.addEventListener('blur', finishTextEdit, { once: true });
 }
 
-function onPointerDown(e) {
-  if (!editMode || e.button !== 0) return;
+function resetElement() {
+  if (!selectedEl) return;
+  ['fontFamily', 'fontSize', 'textAlign', 'color', 'fontWeight'].forEach((p) => {
+    selectedEl.style[p] = '';
+  });
+  syncPanel();
+}
+
+// In edit mode, select on click and stop links/buttons from activating.
+function onClickCapture(e) {
+  if (!editMode || isChrome(e.target)) return;
   const el = targetFrom(e.target);
-  if (!el) return;
-  if (el === editingEl) return; // let native caret/selection work while typing
-
-  select(el);
-
-  const start = getTranslate(el);
-  const startX = e.clientX;
-  const startY = e.clientY;
-  let dragging = false;
-
-  const move = (ev) => {
-    const dx = ev.clientX - startX;
-    const dy = ev.clientY - startY;
-    if (!dragging && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
-      dragging = true;
-      el.classList.add('edit-dragging');
-    }
-    if (dragging) {
-      setTranslate(el, start.x + dx, start.y + dy);
-      ev.preventDefault();
-    }
-  };
-  const up = () => {
-    document.removeEventListener('pointermove', move);
-    document.removeEventListener('pointerup', up);
-    el.classList.remove('edit-dragging');
-  };
-  document.addEventListener('pointermove', move);
-  document.addEventListener('pointerup', up);
+  if (el && el !== editingEl) {
+    e.preventDefault();
+    e.stopPropagation();
+    select(el);
+  }
 }
 
 function onDblClick(e) {
@@ -115,83 +124,132 @@ function onDblClick(e) {
   startTextEdit(el);
 }
 
-// In edit mode, swallow link/button activation so clicks don't navigate.
-function onClickCapture(e) {
-  if (!editMode) return;
-  const el = targetFrom(e.target);
-  if (el && el !== editingEl) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
+function group(labelText, node) {
+  const g = document.createElement('div');
+  g.className = 'edit-group';
+  const l = document.createElement('span');
+  l.className = 'edit-group-label';
+  l.textContent = labelText;
+  g.append(l, node);
+  return g;
 }
 
-function stepFontSize(delta) {
-  if (!selectedEl) return;
-  const size = parseFloat(getComputedStyle(selectedEl).fontSize) || 16;
-  selectedEl.style.fontSize = `${Math.max(8, size + delta)}px`;
+function buildFontControl() {
+  const font = document.createElement('select');
+  font.id = 'edit-font';
+  font.className = 'edit-control';
+  FONTS.forEach(([label, value]) => {
+    const o = document.createElement('option');
+    o.value = value;
+    o.textContent = label;
+    font.append(o);
+  });
+  font.addEventListener('change', () => {
+    if (selectedEl) selectedEl.style.fontFamily = font.value;
+  });
+  return font;
 }
 
-function resetElement() {
-  if (!selectedEl) return;
-  selectedEl.style.transform = '';
-  selectedEl.style.color = '';
-  selectedEl.style.fontSize = '';
-  selectedEl.style.fontWeight = '';
-  selectedEl.style.width = '';
-  selectedEl.style.height = '';
-  translations.set(selectedEl, { x: 0, y: 0 });
-  selectedEl.classList.remove('edit-resizable');
+function buildSizeControl() {
+  const size = document.createElement('select');
+  size.id = 'edit-size';
+  size.className = 'edit-control';
+  SIZES.forEach((s) => {
+    const o = document.createElement('option');
+    o.value = String(s);
+    o.textContent = `${s}px`;
+    size.append(o);
+  });
+  size.addEventListener('change', () => {
+    if (selectedEl) selectedEl.style.fontSize = `${size.value}px`;
+  });
+  return size;
 }
 
-function buildToolbar() {
-  const bar = document.createElement('div');
-  bar.id = 'edit-toolbar';
-  bar.setAttribute('aria-label', 'Text editing tools');
-
-  const mkBtn = (label, title, onClick) => {
+function buildAlignControl() {
+  const align = document.createElement('div');
+  align.className = 'edit-align-group';
+  ALIGNS.forEach(([val, label, title]) => {
     const b = document.createElement('button');
     b.type = 'button';
-    b.textContent = label;
+    b.className = 'edit-align';
+    b.dataset.align = val;
     b.title = title;
     b.setAttribute('aria-label', title);
-    b.addEventListener('click', onClick);
-    return b;
-  };
+    b.textContent = label;
+    b.addEventListener('click', () => {
+      if (!selectedEl) return;
+      selectedEl.style.textAlign = val;
+      syncPanel();
+    });
+    align.append(b);
+  });
+  return align;
+}
 
-  const colorWrap = document.createElement('label');
-  colorWrap.className = 'edit-color-wrap';
-  colorWrap.title = 'Text colour';
+function buildColorControl() {
+  const wrap = document.createElement('div');
+  wrap.className = 'edit-swatches';
+  SWATCHES.forEach((hex) => {
+    const s = document.createElement('button');
+    s.type = 'button';
+    s.className = 'edit-swatch';
+    s.style.background = hex;
+    s.title = hex;
+    s.setAttribute('aria-label', `Colour ${hex}`);
+    s.addEventListener('click', () => {
+      if (!selectedEl) return;
+      selectedEl.style.color = hex;
+      syncPanel();
+    });
+    wrap.append(s);
+  });
   const color = document.createElement('input');
   color.type = 'color';
   color.id = 'edit-color';
-  color.value = '#005e5d';
+  color.className = 'edit-swatch edit-swatch-custom';
+  color.title = 'Custom colour';
+  color.setAttribute('aria-label', 'Custom colour');
   color.addEventListener('input', () => {
     if (selectedEl) selectedEl.style.color = color.value;
   });
-  colorWrap.append(color);
+  wrap.append(color);
+  return wrap;
+}
 
-  bar.append(
-    mkBtn('A−', 'Smaller text', () => stepFontSize(-2)),
-    mkBtn('A+', 'Larger text', () => stepFontSize(2)),
-    mkBtn('B', 'Bold', () => {
-      if (!selectedEl) return;
-      const bold = getComputedStyle(selectedEl).fontWeight >= 600;
-      selectedEl.style.fontWeight = bold ? '400' : '700';
-    }),
-    colorWrap,
+function buildActions() {
+  const actions = document.createElement('div');
+  actions.className = 'edit-actions';
+  const mkBtn = (label, title, fn) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'edit-action';
+    b.textContent = label;
+    b.title = title;
+    b.setAttribute('aria-label', title);
+    b.addEventListener('click', fn);
+    return b;
+  };
+  actions.append(
     mkBtn('Edit text', 'Edit the wording', () => selectedEl && startTextEdit(selectedEl)),
-    mkBtn('Resize box', 'Toggle a resize handle on the box', () => {
-      if (selectedEl) selectedEl.classList.toggle('edit-resizable');
-    }),
-    mkBtn('Reset', 'Undo changes to this element', resetElement),
-    mkBtn('✕', 'Deselect', () => {
-      finishTextEdit();
-      if (selectedEl) selectedEl.classList.remove('edit-selected');
-      selectedEl = null;
-      positionToolbar();
-    }),
+    mkBtn('Reset', 'Undo style changes to this element', resetElement),
+    mkBtn('✕', 'Close', () => { finishTextEdit(); deselect(); }),
   );
-  return bar;
+  return actions;
+}
+
+function buildPanel() {
+  const panel = document.createElement('div');
+  panel.id = 'edit-panel';
+  panel.setAttribute('aria-label', 'Text style');
+  panel.append(
+    group('Font', buildFontControl()),
+    group('Size', buildSizeControl()),
+    group('Position', buildAlignControl()),
+    group('Colour', buildColorControl()),
+    buildActions(),
+  );
+  return panel;
 }
 
 function setEditMode(on) {
@@ -200,13 +258,11 @@ function setEditMode(on) {
   const toggle = document.getElementById('edit-toggle');
   if (toggle) {
     toggle.classList.toggle('active', on);
-    toggle.textContent = on ? '✓ Editing' : '✎ Edit';
+    toggle.textContent = on ? '✓ Styling' : '✎ Style';
   }
   if (!on) {
     finishTextEdit();
-    if (selectedEl) selectedEl.classList.remove('edit-selected');
-    selectedEl = null;
-    positionToolbar();
+    deselect();
   }
 }
 
@@ -220,23 +276,17 @@ export default function initEditMode() {
   const toggle = document.createElement('button');
   toggle.id = 'edit-toggle';
   toggle.type = 'button';
-  toggle.textContent = '✎ Edit';
-  toggle.title = 'Toggle text edit mode';
+  toggle.textContent = '✎ Style';
+  toggle.title = 'Toggle text styling';
   toggle.addEventListener('click', () => setEditMode(!editMode));
 
-  document.body.append(toggle, buildToolbar());
+  document.body.append(toggle, buildPanel());
 
-  document.addEventListener('pointerdown', onPointerDown);
-  document.addEventListener('dblclick', onDblClick);
   document.addEventListener('click', onClickCapture, true);
+  document.addEventListener('dblclick', onDblClick);
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape' || !editMode) return;
-    if (editingEl) {
-      finishTextEdit();
-    } else if (selectedEl) {
-      selectedEl.classList.remove('edit-selected');
-      selectedEl = null;
-      positionToolbar();
-    }
+    if (editingEl) finishTextEdit();
+    else deselect();
   });
 }

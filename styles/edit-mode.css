@@ -1,4 +1,4 @@
-/* Session-only visual edit mode UI. */
+/* Session-only controlled text styling UI. */
 
 #edit-toggle {
   position: fixed;
@@ -17,42 +17,75 @@
   box-shadow: 0 4px 14px rgb(0 0 0 / 25%);
 }
 
-#edit-toggle:hover { background: #0a3a34; }
+#edit-toggle:hover {
+  background: #0a3a34;
+}
 
 #edit-toggle.active {
   background: #c9a227;
   color: #1a1a1a;
 }
 
-#edit-toolbar {
+#edit-panel {
   position: fixed;
   top: 16px;
   left: 50%;
-  transform: translateX(-50%) translateY(-140%);
   z-index: 100000;
   display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 10px;
-  border-radius: 12px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px;
+  max-width: min(94vw, 900px);
+  padding: 12px 16px;
+  border-radius: 14px;
   background: #fff;
   box-shadow: 0 6px 24px rgb(0 0 0 / 22%);
-  transition: transform 0.18s ease, opacity 0.18s ease;
   opacity: 0;
   pointer-events: none;
+  transform: translateX(-50%) translateY(-140%);
+  transition: transform 0.18s ease, opacity 0.18s ease;
   font-family: var(--body-font-family, sans-serif);
 }
 
-#edit-toolbar.visible {
-  transform: translateX(-50%) translateY(0);
+#edit-panel.visible {
   opacity: 1;
   pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
 }
 
-#edit-toolbar button {
-  min-width: 34px;
+.edit-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.edit-group-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #6b6b6b;
+}
+
+.edit-control {
   height: 34px;
-  padding: 0 10px;
+  padding: 0 8px;
+  border: 1px solid #dadada;
+  border-radius: 8px;
+  background: #fff;
+  color: #1a1a1a;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.edit-align-group {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.edit-align {
+  width: 34px;
+  height: 34px;
   border: 1px solid #dadada;
   border-radius: 8px;
   background: #fff;
@@ -62,35 +95,64 @@
   cursor: pointer;
 }
 
-#edit-toolbar button:hover {
+.edit-align:hover {
+  border-color: #005e5d;
+}
+
+.edit-align.active {
+  background: #005e5d;
+  border-color: #005e5d;
+  color: #fff;
+}
+
+.edit-swatches {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.edit-swatch {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid rgb(0 0 0 / 20%);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.edit-swatch:hover {
+  transform: scale(1.12);
+}
+
+.edit-swatch-custom {
+  background: conic-gradient(red, orange, yellow, lime, aqua, blue, magenta, red);
+}
+
+.edit-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.edit-action {
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid #dadada;
+  border-radius: 8px;
+  background: #fff;
+  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.edit-action:hover {
   background: #f1efe8;
   border-color: #005e5d;
 }
 
-#edit-toolbar .edit-color-wrap {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid #dadada;
-  border-radius: 8px;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-#edit-toolbar input[type="color"] {
-  width: 44px;
-  height: 44px;
-  border: none;
-  padding: 0;
-  background: none;
-  cursor: pointer;
-}
-
-/* Editable-target affordances, only while edit mode is on. */
-body.edit-mode { user-select: none; }
-
+/* Selection affordances, only while styling is on. */
 body.edit-mode h1,
 body.edit-mode h2,
 body.edit-mode h3,
@@ -106,7 +168,7 @@ body.edit-mode figcaption,
 body.edit-mode label,
 body.edit-mode th,
 body.edit-mode td {
-  cursor: move;
+  cursor: pointer;
 }
 
 body.edit-mode .edit-selected {
@@ -114,19 +176,8 @@ body.edit-mode .edit-selected {
   outline-offset: 2px;
 }
 
-body.edit-mode .edit-dragging { opacity: 0.85; }
-
 body.edit-mode .edit-typing {
   cursor: text;
-  user-select: text;
   outline: 2px dashed #c9a227;
   outline-offset: 2px;
-}
-
-body.edit-mode .edit-resizable {
-  display: inline-block;
-  overflow: auto;
-  resize: both;
-  min-width: 40px;
-  min-height: 24px;
 }
