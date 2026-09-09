@@ -214,11 +214,11 @@ function buildBookingEngine() {
 
 // Best fares from Jeddah — sourced from saudia.com, deduplicated.
 const BEST_FARES = [
-  { city: 'AlUla', price: '1173', img: '/content/images/fare-alula.jpg' },
-  { city: 'Cairo', price: '1092', img: '/content/images/fare-cairo.jpg' },
-  { city: 'Istanbul', price: '1752', img: '/content/images/fare-istanbul.jpg' },
-  { city: 'London', price: '3301', img: '/content/images/fare-london.jpg' },
-  { city: 'Paris', price: '3169', img: '/content/images/fare-paris.jpg' },
+  { city: 'AlUla', price: '1173', img: '/content/dam/saudia-eds/fare-alula.jpg' },
+  { city: 'Cairo', price: '1092', img: '/content/dam/saudia-eds/fare-cairo.jpg' },
+  { city: 'Istanbul', price: '1752', img: '/content/dam/saudia-eds/fare-istanbul.jpg' },
+  { city: 'London', price: '3301', img: '/content/dam/saudia-eds/fare-london.jpg' },
+  { city: 'Paris', price: '3169', img: '/content/dam/saudia-eds/fare-paris.jpg' },
 ];
 
 /** Build the "Best fares from Jeddah" section with fare cards. */
