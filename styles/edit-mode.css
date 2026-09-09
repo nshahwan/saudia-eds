@@ -1,0 +1,126 @@
+/* Session-only visual edit mode UI. */
+
+#edit-toggle {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100000;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 999px;
+  background: #005e5d;
+  color: #fff;
+  font-family: var(--body-font-family, sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 25%);
+}
+
+#edit-toggle:hover { background: #0a3a34; }
+#edit-toggle.active { background: #c9a227; color: #1a1a1a; }
+
+#edit-toolbar {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-140%);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 22%);
+  transition: transform 0.18s ease, opacity 0.18s ease;
+  opacity: 0;
+  pointer-events: none;
+  font-family: var(--body-font-family, sans-serif);
+}
+
+#edit-toolbar.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#edit-toolbar button {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid #dadada;
+  border-radius: 8px;
+  background: #fff;
+  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#edit-toolbar button:hover { background: #f1efe8; border-color: #005e5d; }
+
+#edit-toolbar .edit-color-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #dadada;
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#edit-toolbar input[type="color"] {
+  width: 44px;
+  height: 44px;
+  border: none;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+
+/* Editable-target affordances, only while edit mode is on. */
+body.edit-mode { user-select: none; }
+
+body.edit-mode h1,
+body.edit-mode h2,
+body.edit-mode h3,
+body.edit-mode h4,
+body.edit-mode h5,
+body.edit-mode h6,
+body.edit-mode p,
+body.edit-mode a,
+body.edit-mode li,
+body.edit-mode button:not(#edit-toggle):not(#edit-toolbar button),
+body.edit-mode span,
+body.edit-mode blockquote,
+body.edit-mode figcaption,
+body.edit-mode label,
+body.edit-mode th,
+body.edit-mode td {
+  cursor: move;
+}
+
+body.edit-mode .edit-selected {
+  outline: 2px solid #005e5d;
+  outline-offset: 2px;
+}
+
+body.edit-mode .edit-dragging { opacity: 0.85; }
+
+body.edit-mode .edit-typing {
+  cursor: text;
+  user-select: text;
+  outline: 2px dashed #c9a227;
+  outline-offset: 2px;
+}
+
+body.edit-mode .edit-resizable {
+  display: inline-block;
+  overflow: auto;
+  resize: both;
+  min-width: 40px;
+  min-height: 24px;
+}
