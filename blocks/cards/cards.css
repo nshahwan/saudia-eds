@@ -25,3 +25,48 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+/* Best fares from Jeddah — cards variant (5-across, green price). */
+.cards.best-fares > ul {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.cards.best-fares > ul > li {
+  border: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 10%);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cards.best-fares > ul > li:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 16%);
+}
+
+.cards.best-fares .cards-card-body h3 {
+  margin: 0 0 6px;
+  font-size: 20px;
+}
+
+.cards.best-fares .cards-card-body p + p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #6b6b6b;
+}
+
+.cards.best-fares .cards-card-body p:first-of-type {
+  margin: 0;
+  color: #005e5d;
+}
+
+.cards.best-fares .cards-card-body p:first-of-type strong {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+@media (width >= 900px) {
+  .cards.best-fares > ul {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

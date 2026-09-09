@@ -212,60 +212,6 @@ function buildBookingEngine() {
   return engine;
 }
 
-// Best fares from Jeddah — sourced from saudia.com, deduplicated.
-const BEST_FARES = [
-  { city: 'AlUla', price: '1173', img: '/content/images/fare-alula.jpg' },
-  { city: 'Cairo', price: '1092', img: '/content/images/fare-cairo.jpg' },
-  { city: 'Istanbul', price: '1752', img: '/content/images/fare-istanbul.jpg' },
-  { city: 'London', price: '3301', img: '/content/images/fare-london.jpg' },
-  { city: 'Paris', price: '3169', img: '/content/images/fare-paris.jpg' },
-];
-
-/** Build the "Best fares from Jeddah" section with fare cards. */
-function buildBestFares() {
-  const section = document.createElement('div');
-  section.className = 'best-fares';
-
-  const heading = document.createElement('h2');
-  heading.className = 'best-fares-title';
-  heading.textContent = 'Best fares from Jeddah';
-  section.append(heading);
-
-  const grid = document.createElement('div');
-  grid.className = 'best-fares-grid';
-
-  BEST_FARES.forEach((fare) => {
-    const card = document.createElement('a');
-    card.className = 'best-fares-card';
-    card.href = '/en-US/flight-deals';
-
-    const pic = document.createElement('picture');
-    const img = document.createElement('img');
-    img.src = fare.img;
-    img.alt = fare.city;
-    img.loading = 'lazy';
-    pic.append(img);
-
-    const body = document.createElement('div');
-    body.className = 'best-fares-card-body';
-    const city = document.createElement('h3');
-    city.textContent = fare.city;
-    const price = document.createElement('p');
-    price.className = 'best-fares-price';
-    price.textContent = `From SAR ${fare.price}`;
-    const sub = document.createElement('p');
-    sub.className = 'best-fares-sub';
-    sub.textContent = 'Round trip From Jeddah';
-    body.append(city, price, sub);
-
-    card.append(pic, body);
-    grid.append(card);
-  });
-
-  section.append(grid);
-  return section;
-}
-
 /**
  * Hide sections whose content this block reproduces, to avoid duplication:
  * the source "Plan your next trip" cards-feature carries the same three offers
@@ -381,12 +327,20 @@ export default function decorate(block) {
   const carousel = buildCarousel(blocks);
   firstWrapper.classList.add('hero-promo-has-booking');
   firstWrapper.prepend(carousel);
-  // Remove everything else in the hero section: the now-empty sibling promo
-  // wrappers AND the source's default-content strip (slide titles +
-  // arrow_back/arrow_forward/pause carousel controls), which the carousel
-  // replaces. Only the first wrapper (carousel + booking + sections) remains.
+  // Remove ONLY the consumed sibling hero-promo wrappers (their blocks now live
+  // in the carousel) and the source's leftover carousel default-content strip
+  // (slide titles + arrow_back/arrow_forward/pause). Never remove other blocks
+  // in the section (fragment, cards-feature, offers-gallery, cards, etc.).
+  wrappers.forEach((w) => { if (w !== firstWrapper) w.remove(); });
+  // The default-content strip is a plain wrapper holding the thumbnail titles
+  // and the "arrow_backarrow_forwardpause" controls — identify it by that text.
   [...section.children].forEach((child) => {
-    if (child !== firstWrapper) child.remove();
+    if (child === firstWrapper) return;
+    if (child.classList.contains('hero-promo-wrapper')) return;
+    const txt = (child.textContent || '').replace(/\s+/g, '');
+    if (/arrow_back|arrow_forward|pause/i.test(txt) && !child.querySelector('.hero-promo, .cards, .fragment, .offers-gallery, .cards-feature')) {
+      child.remove();
+    }
   });
 
   // Booking engine overlaid on the carousel — exactly once on the page
@@ -395,14 +349,8 @@ export default function decorate(block) {
     firstWrapper.append(buildBookingEngine());
   }
 
-  // "Best fares from Jeddah" — right below the booking engine (same wrapper),
-  // with a 5cm gap. Guard against duplicates.
-  if (!document.querySelector('.best-fares')) {
-    firstWrapper.append(buildBestFares());
-  }
-
-  // "Exclusive Offers for You" is now an authorable `offers-gallery` block
-  // (see blocks/offers-gallery). No longer injected here.
+  // "Best fares from Jeddah" and "Exclusive Offers for You" are now authorable
+  // blocks (blocks/best-fares, blocks/offers-gallery). No longer injected here.
 
   // Remove sections whose content is now duplicated here. cards-feature blocks
   // decorate independently, so defer until the current task queue drains.

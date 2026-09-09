@@ -199,6 +199,57 @@
     ]
   },
   {
+    "id": "experiences",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "label": "Section title",
+        "value": "Exceptional experiences with Saudia"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "intro",
+        "label": "Intro",
+        "value": ""
+      }
+    ]
+  },
+  {
+    "id": "experience",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Alt",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "text",
+        "label": "Text (title + description)",
+        "value": ""
+      },
+      {
+        "component": "aem-content",
+        "valueType": "string",
+        "name": "link",
+        "label": "Learn more link"
+      }
+    ]
+  },
+  {
     "id": "fragment",
     "fields": [
       {

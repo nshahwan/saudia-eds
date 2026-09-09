@@ -46,6 +46,12 @@
     ]
   },
   {
+    "id": "experiences",
+    "components": [
+      "experience"
+    ]
+  },
+  {
     "id": "offers-gallery",
     "components": [
       "offer"
