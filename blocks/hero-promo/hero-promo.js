@@ -212,60 +212,6 @@ function buildBookingEngine() {
   return engine;
 }
 
-// Best fares from Jeddah — sourced from saudia.com, deduplicated.
-const BEST_FARES = [
-  { city: 'AlUla', price: '1173', img: 'https://www.saudia.com/-/media/SaudiaWebApp/data/media/img/Live-images/Destinations/Batch-2/Large/AlUla/L-AlUla-1.ashx?rev=d031af8614364b659d4b5d2a3c00b5aa' },
-  { city: 'Cairo', price: '1092', img: 'https://www.saudia.com/-/media/SaudiaWebApp/data/media/img/Live-images/Destinations/Batch-2/Large/Cairo/L-cairo-1.ashx?rev=d92e9ed466174eecbfeb6c49f0e6baa6' },
-  { city: 'Istanbul', price: '1752', img: 'https://www.saudia.com/-/media/SaudiaWebApp/data/media/img/Live-images/Destinations/ffares-nov/L-istanbul-1.ashx?rev=7233038e594749f88f9a993255a90675' },
-  { city: 'London', price: '3301', img: 'https://www.saudia.com/-/media/SaudiaWebApp/data/media/img/Live-images/Destinations/Batch-2/Large/London/Large-(1).ashx?rev=66b64e443c324d388acda1718e97cc0f' },
-  { city: 'Paris', price: '3169', img: 'https://www.saudia.com/-/media/SaudiaWebApp/data/media/img/Live-images/Destinations/Batch-2/Large/Paris/Large-(2).ashx?rev=c12cb69d60f84a99a00003b41c1eaa19' },
-];
-
-/** Build the "Best fares from Jeddah" section with fare cards. */
-function buildBestFares() {
-  const section = document.createElement('div');
-  section.className = 'best-fares';
-
-  const heading = document.createElement('h2');
-  heading.className = 'best-fares-title';
-  heading.textContent = 'Best fares from Jeddah';
-  section.append(heading);
-
-  const grid = document.createElement('div');
-  grid.className = 'best-fares-grid';
-
-  BEST_FARES.forEach((fare) => {
-    const card = document.createElement('a');
-    card.className = 'best-fares-card';
-    card.href = '/en-US/flight-deals';
-
-    const pic = document.createElement('picture');
-    const img = document.createElement('img');
-    img.src = fare.img;
-    img.alt = fare.city;
-    img.loading = 'lazy';
-    pic.append(img);
-
-    const body = document.createElement('div');
-    body.className = 'best-fares-card-body';
-    const city = document.createElement('h3');
-    city.textContent = fare.city;
-    const price = document.createElement('p');
-    price.className = 'best-fares-price';
-    price.textContent = `From SAR ${fare.price}`;
-    const sub = document.createElement('p');
-    sub.className = 'best-fares-sub';
-    sub.textContent = 'Round trip From Jeddah';
-    body.append(city, price, sub);
-
-    card.append(pic, body);
-    grid.append(card);
-  });
-
-  section.append(grid);
-  return section;
-}
-
 /**
  * Hide sections whose content this block reproduces, to avoid duplication:
  * the source "Plan your next trip" cards-feature carries the same three offers
@@ -395,14 +341,8 @@ export default function decorate(block) {
     firstWrapper.append(buildBookingEngine());
   }
 
-  // "Best fares from Jeddah" — right below the booking engine (same wrapper),
-  // with a 5cm gap. Guard against duplicates.
-  if (!document.querySelector('.best-fares')) {
-    firstWrapper.append(buildBestFares());
-  }
-
-  // "Exclusive Offers for You" is now an authorable `offers-gallery` block
-  // (see blocks/offers-gallery). No longer injected here.
+  // "Best fares from Jeddah" and "Exclusive Offers for You" are now authorable
+  // blocks (blocks/best-fares, blocks/offers-gallery). No longer injected here.
 
   // Remove sections whose content is now duplicated here. cards-feature blocks
   // decorate independently, so defer until the current task queue drains.
