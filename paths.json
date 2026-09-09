@@ -1,9 +1,9 @@
 {
 "mappings": [
-   "/content/saudi-eds/en:/"
+   "/content/saudia-eds/en:/"
  ],
 "includes": [
-   "/content/saudi-eds/",
-  "/content/dam/saudi-eds/"
+   "/content/saudia-eds/",
+  "/content/dam/saudia-eds/"
  ]
 }
