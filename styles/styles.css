@@ -326,3 +326,71 @@ main .section.highlight {
   margin: 0;
   padding: 40px 0;
 }
+
+/* -------------------------------------------------------------------------
+ * Global text-style utilities.
+ * Authors pick these from the "Text style" field in Universal Editor to
+ * control font type, size, color and position/alignment of any text. The
+ * classes land on a text element (heading/paragraph) or a text container;
+ * the `> *` rules let a class on a wrapper cascade to the text inside it.
+ * `!important` ensures an author's explicit choice wins over a block's own
+ * default text styling (e.g. white-on-image banner text).
+ * ---------------------------------------------------------------------- */
+
+/* Font type */
+.txt-font-body,
+.txt-font-body * { font-family: var(--body-font-family) !important; }
+
+.txt-font-heading,
+.txt-font-heading * { font-family: var(--heading-font-family) !important; }
+
+.txt-font-serif,
+.txt-font-serif * { font-family: georgia, 'Times New Roman', serif !important; }
+
+.txt-font-mono,
+.txt-font-mono * { font-family: 'Courier New', monospace !important; }
+
+/* Font size */
+.txt-size-xs,
+.txt-size-xs * { font-size: var(--body-font-size-xs) !important; }
+
+.txt-size-s,
+.txt-size-s * { font-size: var(--body-font-size-s) !important; }
+
+.txt-size-m,
+.txt-size-m * { font-size: var(--body-font-size-m) !important; }
+
+.txt-size-l,
+.txt-size-l * { font-size: var(--heading-font-size-l) !important; }
+
+.txt-size-xl,
+.txt-size-xl * { font-size: var(--heading-font-size-xl) !important; }
+
+.txt-size-xxl,
+.txt-size-xxl * { font-size: var(--heading-font-size-xxl) !important; }
+
+/* Text color */
+.txt-color-white,
+.txt-color-white * { color: #fff !important; }
+
+.txt-color-black,
+.txt-color-black * { color: #000 !important; }
+
+.txt-color-green,
+.txt-color-green * { color: #005e5d !important; }
+
+.txt-color-gold,
+.txt-color-gold * { color: #c9a227 !important; }
+
+.txt-color-gray,
+.txt-color-gray * { color: var(--dark-color) !important; }
+
+/* Text position / alignment */
+.txt-align-left,
+.txt-align-left * { text-align: left !important; }
+
+.txt-align-center,
+.txt-align-center * { text-align: center !important; }
+
+.txt-align-right,
+.txt-align-right * { text-align: right !important; }

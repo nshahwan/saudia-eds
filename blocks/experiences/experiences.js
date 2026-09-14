@@ -1,4 +1,4 @@
-import { moveInstrumentation } from '../../scripts/scripts.js';
+import { moveInstrumentation, textStyleClasses } from '../../scripts/scripts.js';
 
 // Authorable "Exceptional experiences with Saudia" — two-column layout:
 // title/intro on the left, experience items on the right (image-left /
@@ -16,11 +16,21 @@ export default function decorate(block) {
   const rows = [...block.children];
   const titleRow = rows[0];
   const introRow = rows[1];
-  const itemRows = rows.slice(2);
+  // Row 3 (index 2) carries the container "classes" (title text style); the
+  // real experience items follow. Detect it by a cell that is only txt-* text.
+  let firstItem = 2;
+  const styleRow = rows[2];
+  const styleText = cellText(styleRow && styleRow.querySelector(':scope > div'));
+  const titleStyles = textStyleClasses(styleRow);
+  if (styleRow && styleText && /^(txt-[a-z-]+[\s,]*)+$/.test(styleText) && !styleRow.querySelector('picture, a')) {
+    firstItem = 3;
+  }
+  const itemRows = rows.slice(firstItem);
 
   // Left column: title + intro.
   const left = document.createElement('div');
   left.className = 'experiences-title';
+  if (titleStyles.length) left.classList.add(...titleStyles);
   const heading = document.createElement('h2');
   heading.textContent = cellText(titleRow && titleRow.querySelector(':scope > div')) || 'Exceptional experiences with Saudia';
   left.append(heading);
@@ -50,6 +60,9 @@ export default function decorate(block) {
 
     const body = document.createElement('div');
     body.className = 'experiences-item-body';
+    // Author-selected text styling (font/size/color/position) for this item.
+    const itemStyles = textStyleClasses(row);
+    if (itemStyles.length) body.classList.add(...itemStyles);
     const textCell = cells[1];
     if (textCell) {
       [...textCell.children].forEach((el) => {

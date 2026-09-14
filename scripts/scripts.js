@@ -46,6 +46,25 @@ export function moveInstrumentation(from, to) {
 }
 
 /**
+ * Extract authored text-style classes (the shared `txt-*` vocabulary set via
+ * the "Text style" field in Universal Editor) from a block row. The value
+ * surfaces either as class attributes on the row's elements or as plain text
+ * in a cell, so we harvest both.
+ * @param {Element} row a block item row
+ * @returns {string[]} the txt-* classes found
+ */
+export function textStyleClasses(row) {
+  if (!row) return [];
+  const fromAttrs = [...row.querySelectorAll('*')]
+    .flatMap((el) => [...el.classList])
+    .filter((c) => c.startsWith('txt-'));
+  const fromText = (row.textContent || '')
+    .split(/[\s,]+/)
+    .filter((c) => c.startsWith('txt-'));
+  return [...new Set([...fromAttrs, ...fromText])];
+}
+
+/**
  * load fonts.css and set a session storage flag
  */
 async function loadFonts() {

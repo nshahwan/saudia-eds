@@ -40,6 +40,53 @@
           "value": "",
           "label": "Text",
           "valueType": "string"
+        },
+        {
+          "component": "multiselect",
+          "valueType": "string",
+          "name": "classes",
+          "label": "Text style (font, size, color, position)",
+          "value": "",
+          "options": [
+            {
+              "name": "Font type",
+              "children": [
+                { "name": "Body", "value": "txt-font-body" },
+                { "name": "Heading", "value": "txt-font-heading" },
+                { "name": "Serif", "value": "txt-font-serif" },
+                { "name": "Monospace", "value": "txt-font-mono" }
+              ]
+            },
+            {
+              "name": "Font size",
+              "children": [
+                { "name": "Extra small", "value": "txt-size-xs" },
+                { "name": "Small", "value": "txt-size-s" },
+                { "name": "Medium", "value": "txt-size-m" },
+                { "name": "Large", "value": "txt-size-l" },
+                { "name": "Extra large", "value": "txt-size-xl" },
+                { "name": "Huge", "value": "txt-size-xxl" }
+              ]
+            },
+            {
+              "name": "Text color",
+              "children": [
+                { "name": "White", "value": "txt-color-white" },
+                { "name": "Black", "value": "txt-color-black" },
+                { "name": "Saudia green", "value": "txt-color-green" },
+                { "name": "Gold", "value": "txt-color-gold" },
+                { "name": "Gray", "value": "txt-color-gray" }
+              ]
+            },
+            {
+              "name": "Position",
+              "children": [
+                { "name": "Left", "value": "txt-align-left" },
+                { "name": "Center", "value": "txt-align-center" },
+                { "name": "Right", "value": "txt-align-right" }
+              ]
+            }
+          ]
         }
       ]
     }

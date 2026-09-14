@@ -2,6 +2,28 @@
 // gets a flight-booking engine overlaid on top of it; later instances are
 // plain promotional banners.
 
+import { textStyleClasses } from '../../scripts/scripts.js';
+
+/**
+ * Apply the author-selected text styling (font/size/color/position) to a
+ * hero-promo block's text cell, and drop the leftover "classes" cell so it is
+ * not rendered as visible text. Runs for every instance (carousel slides and
+ * standalone banners alike) before the carousel early-return.
+ */
+function applyTextStyle(block) {
+  const styles = textStyleClasses(block);
+  // The style value arrives in its own trailing cell; remove it once read.
+  [...block.children].forEach((cell) => {
+    const txt = (cell.textContent || '').trim();
+    if (txt && /^(txt-[a-z-]+[\s,]*)+$/.test(txt) && !cell.querySelector('picture, a, h1, h2, h3, h4, h5, h6')) {
+      cell.remove();
+    }
+  });
+  if (!styles.length) return;
+  const textCell = [...block.children].find((c) => c.querySelector('h1, h2, h3, h4, h5, h6, p'));
+  if (textCell) textCell.classList.add(...styles);
+}
+
 /** Build the Saudia-style flight booking engine. */
 function buildBookingEngine() {
   const engine = document.createElement('div');
@@ -308,6 +330,11 @@ function buildCarousel(slides) {
  * @param {Element} block The hero-promo block element
  */
 export default function decorate(block) {
+  // Apply author-selected text styling to THIS block first — every hero-promo
+  // (carousel slides and standalone banners) styles itself, in both the live
+  // site and the Universal Editor, before either early return below.
+  applyTextStyle(block);
+
   // Inside the Universal Editor the page is loaded in an iframe. Skip the
   // render-only demo transforms (carousel, injected booking engine, and the
   // de-duplication that removes authored sections) so every authored
