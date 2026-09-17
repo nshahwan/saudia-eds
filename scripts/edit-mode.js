@@ -138,6 +138,7 @@ function buildFontControl() {
   const font = document.createElement('select');
   font.id = 'edit-font';
   font.className = 'edit-control';
+  font.setAttribute('aria-label', 'Font');
   FONTS.forEach(([label, value]) => {
     const o = document.createElement('option');
     o.value = value;
@@ -154,6 +155,7 @@ function buildSizeControl() {
   const size = document.createElement('select');
   size.id = 'edit-size';
   size.className = 'edit-control';
+  size.setAttribute('aria-label', 'Text size');
   SIZES.forEach((s) => {
     const o = document.createElement('option');
     o.value = String(s);

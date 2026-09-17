@@ -20,8 +20,10 @@ async function fetchNavFragment() {
 
 /** Close all open megamenu panels. */
 function closeAllPanels(navList) {
-  navList.querySelectorAll('.nav-item[aria-expanded="true"]').forEach((li) => {
-    li.setAttribute('aria-expanded', 'false');
+  navList.querySelectorAll('.nav-item[data-open="true"]').forEach((li) => {
+    li.setAttribute('data-open', 'false');
+    const trigger = li.querySelector('.nav-trigger');
+    if (trigger) trigger.setAttribute('aria-expanded', 'false');
   });
 }
 
@@ -42,13 +44,14 @@ function buildPrimaryNav(section) {
   const startMenu = (h2) => {
     currentItem = document.createElement('li');
     currentItem.className = 'nav-item';
-    currentItem.setAttribute('aria-expanded', 'false');
+    currentItem.setAttribute('data-open', 'false');
 
     const trigger = document.createElement('button');
     trigger.className = 'nav-trigger';
     trigger.type = 'button';
     trigger.textContent = h2.textContent;
     trigger.setAttribute('aria-haspopup', 'true');
+    trigger.setAttribute('aria-expanded', 'false');
     currentItem.append(trigger);
 
     currentPanel = document.createElement('div');
@@ -121,7 +124,13 @@ function buildPrimaryNav(section) {
       anchor.href = href;
       if (img) {
         anchor.className = 'nav-promo-image';
-        anchor.append(img.cloneNode(true));
+        const imgClone = img.cloneNode(true);
+        anchor.append(imgClone);
+        // Guarantee the image-only link has an accessible name even when the
+        // authored image has no alt text.
+        if (!imgClone.getAttribute('alt')) {
+          anchor.setAttribute('aria-label', (el.textContent || '').trim() || 'View promotion');
+        }
       } else {
         anchor.className = 'nav-promo-text';
         anchor.textContent = el.textContent;
@@ -208,7 +217,8 @@ function addBehavior(nav) {
     const openItem = () => {
       cancelClose();
       closeAllPanels(navList);
-      item.setAttribute('aria-expanded', 'true');
+      item.setAttribute('data-open', 'true');
+      if (trigger) trigger.setAttribute('aria-expanded', 'true');
     };
 
     // Desktop: open on hover of the trigger, and stay open while hovering the
@@ -224,9 +234,10 @@ function addBehavior(nav) {
     // Click toggles (works on mobile and as a keyboard/click fallback)
     trigger.addEventListener('click', () => {
       cancelClose();
-      const open = item.getAttribute('aria-expanded') === 'true';
+      const open = trigger.getAttribute('aria-expanded') === 'true';
       closeAllPanels(navList);
-      item.setAttribute('aria-expanded', open ? 'false' : 'true');
+      item.setAttribute('data-open', open ? 'false' : 'true');
+      trigger.setAttribute('aria-expanded', open ? 'false' : 'true');
     });
   });
 
@@ -244,6 +255,7 @@ function addBehavior(nav) {
       const open = nav.getAttribute('data-mobile-open') === 'true';
       nav.setAttribute('data-mobile-open', open ? 'false' : 'true');
       hamburger.setAttribute('aria-expanded', open ? 'false' : 'true');
+      hamburger.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
     });
   }
 
@@ -251,7 +263,10 @@ function addBehavior(nav) {
   isDesktop.addEventListener('change', () => {
     closeAllPanels(navList);
     nav.setAttribute('data-mobile-open', 'false');
-    if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
+    if (hamburger) {
+      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.setAttribute('aria-label', 'Open menu');
+    }
   });
 
   // Transparent-over-hero: solid header once the page is scrolled.

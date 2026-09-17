@@ -170,7 +170,7 @@
   padding: 0;
 }
 
-.hero-carousel-dot[aria-selected='true'] {
+.hero-carousel-dot[aria-current='true'] {
   background: #fff;
 }
 
@@ -256,12 +256,12 @@
 }
 
 /* Selected panel tab: bold with a green underline (matches source). */
-.hero-booking-toptabs-left .hero-booking-toptab[aria-selected='true'] {
+.hero-booking-toptabs-left .hero-booking-toptab[aria-current='true'] {
   font-weight: 700;
   color: #1a1a1a;
 }
 
-.hero-booking-toptabs-left .hero-booking-toptab[aria-selected='true']::after {
+.hero-booking-toptabs-left .hero-booking-toptab[aria-current='true']::after {
   content: '';
   position: absolute;
   left: 0;
@@ -295,7 +295,7 @@
   cursor: pointer;
 }
 
-.hero-booking-tab[aria-selected='true'] {
+.hero-booking-tab[aria-current='true'] {
   background: #005e5d;
   color: #fff;
 }

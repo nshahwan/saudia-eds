@@ -68,10 +68,10 @@ function buildBookingEngine() {
       tab.type = 'button';
       tab.className = 'hero-booking-tab';
       tab.textContent = label;
-      if (i === 0) tab.setAttribute('aria-selected', 'true');
+      if (i === 0) tab.setAttribute('aria-current', 'true');
       tab.addEventListener('click', () => {
-        tabs.querySelectorAll('.hero-booking-tab').forEach((t) => t.removeAttribute('aria-selected'));
-        tab.setAttribute('aria-selected', 'true');
+        tabs.querySelectorAll('.hero-booking-tab').forEach((t) => t.removeAttribute('aria-current'));
+        tab.setAttribute('aria-current', 'true');
       });
       tabs.append(tab);
     });
@@ -180,9 +180,9 @@ function buildBookingEngine() {
   ];
 
   const showPanel = (index) => {
-    leftGroup.querySelectorAll('.hero-booking-toptab').forEach((t) => t.removeAttribute('aria-selected'));
+    leftGroup.querySelectorAll('.hero-booking-toptab').forEach((t) => t.removeAttribute('aria-current'));
     const activeTab = leftGroup.querySelector(`[data-panel="${index}"]`);
-    if (activeTab) activeTab.setAttribute('aria-selected', 'true');
+    if (activeTab) activeTab.setAttribute('aria-current', 'true');
     panelHost.textContent = '';
     panelHost.append(PANEL_TABS[index].build());
   };
@@ -307,7 +307,10 @@ function buildCarousel(slides) {
   const show = (i) => {
     index = (i + slides.length) % slides.length;
     track.style.transform = `translateX(-${index * 100}%)`;
-    dotButtons.forEach((d, di) => d.setAttribute('aria-selected', di === index ? 'true' : 'false'));
+    dotButtons.forEach((d, di) => {
+      if (di === index) d.setAttribute('aria-current', 'true');
+      else d.removeAttribute('aria-current');
+    });
   };
   const nextSlide = () => show(index + 1);
   const startAuto = () => { timer = window.setInterval(nextSlide, 6000); };
