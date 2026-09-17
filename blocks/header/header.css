@@ -144,7 +144,7 @@ header .nav-panel {
   display: none;
 }
 
-header .nav-item[aria-expanded='true'] .nav-panel {
+header .nav-item[data-open='true'] .nav-panel {
   display: block;
   padding: 0 8px 12px;
 }
@@ -257,6 +257,13 @@ header .nav-search-form {
   background: #fff;
 }
 
+/* Keyboard focus indicator: the input clears its own outline, so surface the
+   focus ring on the form wrapper instead. */
+header .nav-search-form:focus-within {
+  outline: 2px solid #005e5d;
+  outline-offset: 2px;
+}
+
 header .nav-search-input {
   border: 0;
   outline: 0;
@@ -328,7 +335,7 @@ header .nav-login {
 
   /* ~30% translucent gray hover box on the trigger */
   header .nav-item:hover .nav-trigger,
-  header .nav-item[aria-expanded='true'] .nav-trigger {
+  header .nav-item[data-open='true'] .nav-trigger {
     background-color: rgb(128 128 128 / 30%);
   }
 
@@ -353,7 +360,7 @@ header .nav-login {
     animation: none;
   }
 
-  header .nav-item[aria-expanded='true'] .nav-panel {
+  header .nav-item[data-open='true'] .nav-panel {
     display: block;
     padding: 28px 0;
   }

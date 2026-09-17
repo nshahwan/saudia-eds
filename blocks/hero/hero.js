@@ -13,10 +13,10 @@ function buildBookingEngine() {
     tab.type = 'button';
     tab.className = 'hero-booking-tab';
     tab.textContent = label;
-    if (i === 0) tab.setAttribute('aria-selected', 'true');
+    if (i === 0) tab.setAttribute('aria-current', 'true');
     tab.addEventListener('click', () => {
-      tabs.querySelectorAll('.hero-booking-tab').forEach((t) => t.removeAttribute('aria-selected'));
-      tab.setAttribute('aria-selected', 'true');
+      tabs.querySelectorAll('.hero-booking-tab').forEach((t) => t.removeAttribute('aria-current'));
+      tab.setAttribute('aria-current', 'true');
     });
     tabs.append(tab);
   });

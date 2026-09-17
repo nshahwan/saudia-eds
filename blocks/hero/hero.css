@@ -69,7 +69,7 @@
   cursor: pointer;
 }
 
-.hero-booking-tab[aria-selected='true'] {
+.hero-booking-tab[aria-current='true'] {
   background: #005e5d;
   color: #fff;
 }
